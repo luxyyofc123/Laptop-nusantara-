@@ -1,0 +1,1405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function() {
+      // Inisialisasi EmailJS dengan Public Key Anda
+      emailjs.init({
+        publicKey: "BStFbwrVStKyx9zMo", // <--- GANTI DENGAN PUBLIC KEY ANDA
+      });
+   })();
+    </script>
+    <title>Nusantara - Laptop Digital</title>
+    <style>
+        /* Reset dan gaya dasar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 5px;
+        }
+        
+        header h2 {
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+        
+        /* Menu Kanan Atas */
+        .menu-container {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn-login, .btn-admin, .btn-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+        
+        .btn-login:hover, .btn-admin:hover, .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .user-info {
+            color: white;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .menu-icon {
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: white;
+            background: rgba(255, 255, 255, 0.1);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
+        }
+        
+        .menu-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-menu ul {
+            list-style: none;
+            padding: 10px 0;
+        }
+        
+        .dropdown-menu ul li {
+            padding: 0;
+        }
+        
+        .dropdown-menu ul li a {
+            display: block;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+        
+        .dropdown-menu ul li a:hover {
+            background: #f0f0f0;
+            color: #1a237e;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 35, 126, 0.8), rgba(26, 35, 126, 0.8)), url('https://images.unsplash.com/photo-1496181133206-80ce9b88a853?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn-hero {
+            display: inline-block;
+            background-color: #ff9800;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+        
+        .btn-hero:hover {
+            background-color: #f57c00;
+        }
+        
+        /* Produk Section */
+        .products {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #1a237e;
+            font-size: 2.2rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #3949ab;
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 15px;
+        }
+        
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #1a237e;
+        }
+        
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #e53935;
+            margin-bottom: 15px;
+        }
+        
+        .product-description {
+            margin-bottom: 20px;
+            color: #666;
+            flex-grow: 1;
+        }
+        
+        .btn-buy {
+            display: inline-block;
+            background-color: #3949ab;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            text-align: center;
+            text-decoration: none;
+        }
+        
+        .btn-buy:hover {
+            background-color: #283593;
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal h3 {
+            margin-bottom: 20px;
+            color: #1a237e;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .btn-submit {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-submit:hover {
+            background-color: #388e3c;
+        }
+        
+        /* Modal Konfirmasi Pembelian */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .confirmation-content {
+            background-color: white;
+            padding: 40px 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            text-align: center;
+        }
+        
+        .confirmation-icon {
+            font-size: 4rem;
+            color: #4caf50;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+        
+        .confirmation-content h3 {
+            margin-bottom: 15px;
+            color: #1a237e;
+            font-size: 1.8rem;
+        }
+        
+        .confirmation-content p {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .btn-ok {
+            background-color: #3949ab;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-ok:hover {
+            background-color: #283593;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 2000;
+            overflow-y: auto;
+        }
+        
+        .admin-header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-content {
+            padding: 30px;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .admin-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        /* Cart */
+        .cart-icon {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #3949ab;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            transition: transform 0.3s;
+        }
+        
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #e53935;
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #1a237e;
+            color: white;
+            padding: 40px 0 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-section h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: #ff9800;
+        }
+        
+        .footer-section p, .footer-section a {
+            color: #c5cae9;
+            text-decoration: none;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .footer-section a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background-color: #3949ab;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #ff9800;
+        }
+        
+        .copyright {
+            border-top: 1px solid #3949ab;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #c5cae9;
+        }
+        
+        /* Animasi */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+        
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #ff9800;
+            opacity: 0;
+            z-index: 1002;
+        }
+        
+        .product-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        /* Responsif */
+        @media (max-width: 768px) {
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+            }
+            
+            .hero {
+                padding: 50px 0;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .menu-container {
+                right: 15px;
+                top: 15px;
+            }
+            
+            
+            .dropdown-menu {
+                right: -10px;
+            }
+            
+            .auth-buttons {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>NUSANTARA</h1>
+            <h2>LAPTOP DIGITAL</h2>
+            
+            <!-- Menu Kanan Atas -->
+            <div class="menu-container">
+                <div class="user-info" id="userInfo">
+                    <span id="userName">Pengguna</span>
+                </div>
+                <div class="auth-buttons" id="authButtons">
+                    <button class="btn-login" id="showLogin">Login/Daftar</button>
+                    <!-- Tombol Admin HILANG dari sini -->
+                </div>
+                <button class="btn-logout" id="btnLogout" style="display: none;">Logout</button>
+                <div class="menu-icon">☰</div>
+                <div class="dropdown-menu">
+                    <ul>
+                        <li><a href="#home">Beranda</a></li>
+                        <li><a href="#products">Produk</a></li>
+                        <li><a href="#about">Tentang Kami</a></li>
+                        <li><a href="#contact">Kontak</a></li>
+                        <!-- Link Admin akan muncul di sini setelah login owner -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h2>laptop-nusantara</h2>
+            <p>Halo semuanya! Kami dari X TKJ 1 ingin memperkenalkan produk kami, yaitu laptop berkualitas dengan harga yang terjangkau. Berikut produk yang kami jual.</p>
+            <a href="#products" class="btn-hero">Lihat Produk</a>
+        </div>
+    </section>
+    
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Laptop Asus</h2>
+            
+            <div class="product-grid">
+                <!-- Produk 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://img1.pixhost.to/images/9013/644766654_lily.jpg" alt="Asus vivobook">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Asus vivobook</h3>
+                        <p class="product-price">IDR 6.749.000</p>Laptop Asus vivobook adalah laptop yang mempunyai perangkat komputasi serbaguna untuk pengguna sehari-hari. Seperti bekerja, belajar, browsing dan hiburan. Vivobook dirancang untuk memberi keseimbangan antar desain  dan fungsi. Laptop Asus vivobook dapat menjadi pilihan ideal sebagai laptop harian bagi pelajar dan profesional.<p class="product-description">.</p>
+                        <a href="#" class="btn-buy" data-product="Asus vivobook" data-price="6749000">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Produk 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://img1.pixhost.to/images/9013/644771546_lily.jpg" alt="Asus zenbook">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Asus zenbook</h3>
+                        <p class="product-price">IDR 20.999.000</p>
+                        <p class="product-description">Laptop Asus Zenbook adalah laptop premium yang ringkas dan ringan. Laptop ini bertenaga tinggi, dirancang khusus untuk pengguna profesional dan kreatif. Laptop Asus ZenBook  Hadir dengan desain elegan, performa canggih dengan fitur AI terbaru, serta daya tahan baterai yang lama. Laptop dilengkapi inovasi modern seperti layar sentuh OLED dan kemampuan 2-in-1 pada model Flip.</p>
+                        <a href="#" class="btn-buy" data-product="Asus zenbook" data-price="20999000">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Produk 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://img1.pixhost.to/images/9030/644933634_lily.jpg" alt="Asus Expertbook">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Asus Expertbook</h3>
+                        <p class="product-price">IDR 15.599.000</p>
+                        <p class="product-description">Laptop Asus ExpertBook adalah laptop yang mendukung produktivitas dan kebutuhan profesional di lingkungan bisnis dengan menawarkan kombinasi performa tinggi, daya tahan superior yang sudah termasuk ke dalam standar ketahanan militer, keamanan tingkat enterprise dan fitur-fitur ai seperti: AI Expert Meet yang berguna untuk meningkatkan produktivitas saat rapat. Laptop Asus Expertbook dirancang untuk menangani tugas berat, portabilitas dan kendala jangka panjang. Hingga menjadikan laptop Asus Expertbook menjadi pilihan ideal bagi pengguna profesional dan pembisnis.</p>
+                        <a href="#" class="btn-buy" data-product="Asus Expertbook" data-price="15599000">Beli Sekarang</a>
+                    </div>
+                </div>
+                
+                <!-- Produk 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://img1.pixhost.to/images/9030/644936580_lily.jpg" alt="Asus Chromebook">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Asus Chromebook</h3>
+                        <p class="product-price">IDR 6.836.453</p>
+                        <p class="product-description">Asus Chromebook adalah laptop serbaguna yang memiliki fitur chrome OS, fitur ini dapat digunakan untuk tugas sehari-hari seperti produktivitas, belajar, hiburan dan pengelolaan kerja digital berbasis internet, terutama melalui aplikasi Google Android dan web. Laptop ini sudah memiliki keamanan terintegrasi, daya tahan yang baik,  ketahanan baterai dan kompatibilitas dengan berbagai aksesoris seperti stylus. Sehingga laptop Asus Chromebook cocok untuk kalangan pelajar dan pengguna umum.</p>
+                        <a href="#" class="btn-buy" data-product="Asus Chromebook" data-price="6836453">Beli Sekarang</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">Layanan Service</h2>
+            
+            <div class="product-grid">
+                <!-- Produk 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://files.catbox.moe/5a3ofh.jpg" alt="Pengantian">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Pengantian (Ram)</h3>
+                        <p class="product-price">IDR 200.000</p></p>
+                    </div>
+                </div>
+                
+               <!-- Produk 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://files.catbox.moe/0got7c.jpg" alt="Pengantian">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Pengantian (Hdd/Ssd)</h3>
+                        <p class="product-price">IDR 250.000</p></p>
+                    </div>
+                </div>
+        
+               <!-- Produk 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://files.catbox.moe/xhhwpe.jpg" alt="Pengantian">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Pengantian (Motherboard)</h3>
+                        <p class="product-price">IDR 500.000</p></p>
+                    </div>
+                </div>
+                
+             <!-- Produk 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://files.catbox.moe/xhhwpe.jpg" alt="Pengantian">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Pembersihan (Virus)</h3>
+                        <p class="product-price">IDR 100.000</p></p>
+                    </div>
+                </div>
+                
+             <!-- Produk 5 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://files.catbox.moe/xhhwpe.jpg" alt="Pengantian">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Instalasi Ulang os (Windows/Linux)</h3></h3></h3>
+                        <p class="product-price">IDR 200.000</p></p>
+                    </div>
+                </div>
+             <!-- Produk 6 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://files.catbox.moe/xhhwpe.jpg" alt="Pengantian">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">Pegantian Lcd</h3></h3></h3>
+                        <p class="product-price">IDR 350.000</p></p>
+                    </div>
+                </div>                
+                
+    <!-- About Section -->
+    <section id="about" style="background-color: #e8eaf6; padding: 60px 0;">
+        <div class="container">
+            <h2 class="section-title">Tentang Kamii</h2>
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+                <p style="font-size: 1.1rem; margin-bottom: 20px;">Kami dari X TKJ 1 adalah tim yang berdedikasi untuk menyediakan laptop berkualitas dengan harga terjangkau. Dengan pengalaman di bidang teknologi, kami memastikan setiap produk yang kami jual memenuhi standar kualitas tertinggi.</p>
+                <p style="font-size: 1.1rem;">Visi kami adalah menjadi penyedia laptop terpercaya di Indonesia, membantu masyarakat mendapatkan perangkat teknologi yang mereka butuhkan dengan harga yang kompetitif.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Tentang Kami</h3>
+                    <p>Kami dari X TKJ 1 menyediakan laptop berkualitas dengan harga terjangkau untuk memenuhi kebutuhan digital Anda.</p>
+                    <div class="social-icons">
+                        <a href="#">FB</a>
+                        <a href="#">IG</a>
+                        <a href="#">TW</a>
+                        <a href="#">WA</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Kontak</h3>
+                    <p>Email: info@laptop-nusantara.com</p>
+                    <p>Telepon: +1 (504) 505-2412</p>
+                    <p>Alamat: Jl. Tunas Teknologi</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Link Cepat</h3>
+                    <a href="#home">Beranda</a>
+                    <a href="#products">Produk</a>
+                    <a href="#about">Tentang Kami</a>
+                    <a href="#contact">Kontak</a>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 Nusantara Laptop Digital. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Cart Icon -->
+    <div class="cart-icon">
+        <span>🛒</span>
+        <span class="cart-count">0</span>
+    </div>
+    
+    <!-- Modal Login/Signup -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="loginTitle">Login ke Akun Anda</h3>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <div class="form-group" id="nameField" style="display: none;">
+                    <label for="loginName">Nama Lengkap:</label>
+                    <input type="text" id="loginName">
+                </div>
+                <button type="submit" class="btn-submit" id="loginSubmit">Login</button>
+            </form>
+            <p style="text-align: center; margin-top: 15px;">
+                <span id="switchText">Belum punya akun?</span> 
+                <a href="#" id="switchMode">Daftar di sini</a>
+            </p>
+        </div>
+    </div>
+    
+    <!-- Modal Pembelian -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Form Pemesanan</h3>
+            <form id="purchaseForm">
+                <div class="form-group">
+                    <label for="productName">Produk:</label>
+                    <input type="text" id="productName" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="productPrice">Harga:</label>
+                    <input type="text" id="productPrice" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="customerName">Nama Lengkap:</label>
+                    <input type="text" id="customerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerEmail">Email:</label>
+                    <input type="email" id="customerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerPhone">No. Telepon:</label>
+                    <input type="tel" id="customerPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="customerAddress">Alamat Pengiriman:</label>
+                    <textarea id="customerAddress" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="paymentMethod">Metode Pembayaran:</label>
+                    <select id="paymentMethod" required>
+                        <option value="">Pilih metode pembayaran</option>
+                        <option value="transfer">Transfer Bank</option>
+                        <option value="cod">COD (Bayar di Tempat)</option>
+                        <option value="credit">Kartu Kredit</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit">Pesan Sekarang</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Modal Konfirmasi Pembelian -->
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">✓</div>
+            <h3>Pembelian Berhasil!</h3>
+            <p id="confirmationMessage">Terima kasih atas pembelian Anda. Pesanan akan segera diproses dan dikirim ke alamat Anda.</p>
+            <button class="btn-ok">OK</button>
+        </div>
+    </div>
+    
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h2>Admin Panel - Data Pembelian</h2>
+            <button class="btn-ok" id="closeAdmin">Tutup Panel</button>
+        </div>
+        <div class="admin-content">
+            <h3>Data Pelanggan dan Pembelian</h3>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Telepon</th>
+                        <th>Produk</th>
+                        <th>Harga</th>
+                        <th>Alamat</th>
+                        <th>Metode Bayar</th>
+                        <th>Tanggal</th>
+                    </tr>
+                </thead>
+                <tbody id="purchaseData">
+                    <!-- Data pembelian akan dimasukkan di sini oleh JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        // JavaScript untuk fungsionalitas website
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elemen DOM
+            const buyButtons = document.querySelectorAll('.btn-buy');
+            const modal = document.getElementById('purchaseModal');
+            const confirmationModal = document.getElementById('confirmationModal');
+            const loginModal = document.getElementById('loginModal');
+            const adminPanel = document.getElementById('adminPanel');
+            const closeModal = document.querySelectorAll('.close-modal');
+            const productNameInput = document.getElementById('productName');
+            const productPriceInput = document.getElementById('productPrice');
+            const purchaseForm = document.getElementById('purchaseForm');
+            const loginForm = document.getElementById('loginForm');
+            const confirmationMessage = document.getElementById('confirmationMessage');
+            const btnOk = document.querySelector('.btn-ok');
+            const cartCount = document.querySelector('.cart-count');
+            const cartIcon = document.querySelector('.cart-icon');
+            const menuIcon = document.querySelector('.menu-icon');
+            const dropdownMenu = document.querySelector('.dropdown-menu');
+            const showLogin = document.getElementById('showLogin');
+            const closeAdmin = document.getElementById('closeAdmin');
+            const switchMode = document.getElementById('switchMode');
+            const switchText = document.getElementById('switchText');
+            const loginTitle = document.getElementById('loginTitle');
+            const loginSubmit = document.getElementById('loginSubmit');
+            const nameField = document.getElementById('nameField');
+            const purchaseData = document.getElementById('purchaseData');
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            const authButtons = document.getElementById('authButtons');
+            const btnLogout = document.getElementById('btnLogout');
+            const dropdownMenuList = document.querySelector('.dropdown-menu ul');
+            
+            // Data
+            let cartItems = [];
+            let customerData = {};
+            let purchaseHistory = JSON.parse(localStorage.getItem('purchaseHistory')) || [];
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+            let isLoginMode = true;
+            
+            // Kredensial admin (hanya untuk owner)
+            const ownerCredentials = {
+                email: "owner@nusantara.com",
+                password: "owner123"
+            };
+            
+            // Inisialisasi
+            updatePurchaseTable();
+            updateUserInterface();
+            
+            // Update tampilan berdasarkan status login
+            function updateUserInterface() {
+                if (currentUser) {
+                    userInfo.style.display = 'block';
+                    userName.textContent = currentUser.name;
+                    authButtons.style.display = 'none';
+                    btnLogout.style.display = 'block';
+                    
+                    // Jika yang login adalah owner, tambahkan link admin ke dropdown menu
+                    if (currentUser.email === ownerCredentials.email) {
+                        // Hapus link admin jika sudah ada
+                        const existingAdminLink = document.querySelector('.admin-link');
+                        if (existingAdminLink) {
+                            existingAdminLink.remove();
+                        }
+                        
+                        // Tambahkan link admin
+                        const adminLink = document.createElement('li');
+                        adminLink.className = 'admin-link';
+                        adminLink.innerHTML = '<a href="#" id="showAdminPanel">Panel Admin</a>';
+                        dropdownMenuList.appendChild(adminLink);
+                        
+                        // Event listener untuk panel admin
+                        document.getElementById('showAdminPanel').addEventListener('click', function(e) {
+                            e.preventDefault();
+                            adminPanel.style.display = 'block';
+                            dropdownMenu.classList.remove('active');
+                        });
+                    }
+                } else {
+                    userInfo.style.display = 'none';
+                    authButtons.style.display = 'flex';
+                    btnLogout.style.display = 'none';
+                    
+                    // Hapus link admin dari dropdown menu
+                    const adminLink = document.querySelector('.admin-link');
+                    if (adminLink) {
+                        adminLink.remove();
+                    }
+                }
+            }
+            
+            // Toggle menu dropdown
+            menuIcon.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('active');
+            });
+            
+            // Tutup menu saat klik di luar
+            document.addEventListener('click', function() {
+                dropdownMenu.classList.remove('active');
+            });
+            
+            // Mencegah menu tertutup saat klik di dalam menu
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Buka modal login
+            showLogin.addEventListener('click', function() {
+                loginModal.style.display = 'flex';
+                isLoginMode = true;
+                updateLoginForm();
+            });
+            
+            // Tutup panel admin
+            closeAdmin.addEventListener('click', function() {
+                adminPanel.style.display = 'none';
+            });
+            
+            // Logout
+            btnLogout.addEventListener('click', function() {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                updateUserInterface();
+                alert('Anda telah logout');
+            });
+            
+            // Switch antara login dan signup
+            switchMode.addEventListener('click', function(e) {
+                e.preventDefault();
+                isLoginMode = !isLoginMode;
+                updateLoginForm();
+            });
+            
+            // Update form login/signup
+            function updateLoginForm() {
+                if (isLoginMode) {
+                    loginTitle.textContent = 'Login ke Akun Anda';
+                    loginSubmit.textContent = 'Login';
+                    switchText.textContent = 'Belum punya akun?';
+                    switchMode.textContent = 'Daftar di sini';
+                    nameField.style.display = 'none';
+                } else {
+                    loginTitle.textContent = 'Buat Akun Baru';
+                    loginSubmit.textContent = 'Daftar';
+                    switchText.textContent = 'Sudah punya akun?';
+                    switchMode.textContent = 'Login di sini';
+                    nameField.style.display = 'block';
+                }
+            }
+            
+            // Proses form login/signup
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                const name = document.getElementById('loginName').value;
+                
+                if (isLoginMode) {
+                    // Mode login
+                    const user = users.find(u => u.email === email && u.password === password);
+                    if (user) {
+                        currentUser = user;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        loginModal.style.display = 'none';
+                        loginForm.reset();
+                        updateUserInterface();
+                        alert(`Selamat datang kembali, ${user.name}!`);
+                    } else {
+                        alert('Email atau password salah!');
+                    }
+                } else {
+                    // Mode signup
+                    if (name && email && password) {
+                        // Cek apakah email sudah terdaftar
+                        if (users.find(u => u.email === email)) {
+                            alert('Email sudah terdaftar!');
+                            return;
+                        }
+                        
+                        const newUser = { name, email, password };
+                        users.push(newUser);
+                        localStorage.setItem('users', JSON.stringify(users));
+                        
+                        currentUser = newUser;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        
+                        loginModal.style.display = 'none';
+                        loginForm.reset();
+                        updateUserInterface();
+                        alert(`Pendaftaran berhasil! Selamat datang, ${name}!`);
+                    } else {
+                        alert('Harap isi semua field!');
+                    }
+                }
+            });
+            
+            
+            
+            // Buka modal saat tombol beli diklik
+            buyButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Cek apakah user sudah login
+                    if (!currentUser) {
+                        alert('Silakan login terlebih dahulu untuk melakukan pembelian!');
+                        loginModal.style.display = 'flex';
+                        isLoginMode = true;
+                        updateLoginForm();
+                        return;
+                    }
+                    
+                    const product = this.getAttribute('data-product');
+                    const price = this.getAttribute('data-price');
+                    
+                    // Format harga
+                    const formattedPrice = new Intl.NumberFormat('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR'
+                    }).format(price);
+                    
+                    productNameInput.value = product;
+                    productPriceInput.value = formattedPrice;
+                    
+                    // Isi data user jika sudah login
+                    document.getElementById('customerName').value = currentUser.name;
+                    document.getElementById('customerEmail').value = currentUser.email;
+                    
+                    modal.style.display = 'flex';
+                    
+                    // Tambah ke keranjang
+                    cartItems.push({product, price});
+                    cartCount.textContent = cartItems.length;
+                });
+            });
+            
+            // Tutup modal
+            closeModal.forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    loginModal.style.display = 'none';
+                });
+            });
+            
+            // Tutup modal jika klik di luar modal
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+                if (e.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+                if (e.target === confirmationModal) {
+                    confirmationModal.style.display = 'none';
+                }
+            });
+            
+            // Inisialisasi EmailJS (pastikan sudah import script EmailJS di atas)
+(function() {
+    emailjs.init("im7wzhPQKluYnDIOG"); // Ganti dengan Public Key dari akun EmailJS
+})();
+
+// Proses form pembelian
+purchaseForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Ambil data pembeli
+    const customerData = {
+        product: productNameInput.value,
+        price: productPriceInput.value,
+        name: document.getElementById('customerName').value,
+        email: document.getElementById('customerEmail').value,
+        phone: document.getElementById('customerPhone').value,
+        address: document.getElementById('customerAddress').value,
+        payment: document.getElementById('paymentMethod').value,
+        date: new Date().toLocaleString('id-ID')
+    };
+    
+    // Simpan ke riwayat pembelian (localStorage)
+    purchaseHistory.push(customerData);
+    localStorage.setItem('purchaseHistory', JSON.stringify(purchaseHistory));
+    
+    // Update tabel admin
+    updatePurchaseTable();
+    
+    // === Kirim notifikasi ke Gmail via EmailJS ===
+    const emailParams = {
+        product: customerData.product,
+        price: customerData.price,
+        name: customerData.name,
+        email: customerData.email,
+        phone: customerData.phone,
+        address: customerData.address,
+        payment: customerData.payment,
+        date: customerData.date
+    };
+
+    emailjs.send("service_g9mgcbl", "template_pmpbu7d", emailParams)
+        .then(function(response) {
+            console.log("✅ Notifikasi order terkirim:", response.status, response.text);
+        }, function(error) {
+            console.error("❌ Gagal mengirim notifikasi:", error);
+        });
+
+    // Tampilkan pesan konfirmasi ke pembeli
+    confirmationMessage.innerHTML = `
+        Terima kasih <strong>${customerData.name}</strong>!<br><br>
+        Pembelian <strong>${customerData.product}</strong> telah berhasil.<br><br>
+        Pesanan akan segera diproses dan dikirim ke alamat:<br>
+        <strong>${customerData.address}</strong><br><br>
+        Kami akan mengirimkan konfirmasi ke email <strong>${customerData.email}</strong> 
+        atau menghubungi Anda di <strong>${customerData.phone}</strong>.
+    `;
+    
+    // Tutup modal utama & tampilkan modal konfirmasi
+    modal.style.display = 'none';
+    confirmationModal.style.display = 'flex';
+    
+    // Efek confetti
+    createConfetti();
+});
+
+// Tutup modal konfirmasi
+btnOk.addEventListener('click', function() {
+    confirmationModal.style.display = 'none';
+    purchaseForm.reset();
+});
+
+            
+            // Tampilkan keranjang saat ikon diklik
+            cartIcon.addEventListener('click', function() {
+                if (cartItems.length > 0) {
+                    let cartContent = "Produk dalam keranjang:\n";
+                    cartItems.forEach(item => {
+                        cartContent += `- ${item.product} (${new Intl.NumberFormat('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR'
+                        }).format(item.price)})\n`;
+                    });
+                    alert(cartContent);
+                } else {
+                    alert("Keranjang belanja Anda masih kosong.");
+                }
+            });
+            
+            // Fungsi untuk membuat efek confetti
+            function createConfetti() {
+                const colors = ['#ff9800', '#e53935', '#3949ab', '#4caf50', '#9c27b0'];
+                const confettiCount = 100;
+                
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.animation = `confetti ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    
+                    document.body.appendChild(confetti);
+                    
+                    // Hapus confetti setelah animasi selesai
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }
+            }
+            
+            // Fungsi untuk memperbarui tabel data pembelian
+            function updatePurchaseTable() {
+                purchaseData.innerHTML = '';
+                
+                if (purchaseHistory.length === 0) {
+                    purchaseData.innerHTML = '<tr><td colspan="9" style="text-align: center;">Belum ada data pembelian</td></tr>';
+                    return;
+                }
+                
+                purchaseHistory.forEach((purchase, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${purchase.name}</td>
+                        <td>${purchase.email}</td>
+                        <td>${purchase.phone}</td>
+                        <td>${purchase.product}</td>
+                        <td>${purchase.price}</td>
+                        <td>${purchase.address}</td>
+                        <td>${purchase.payment}</td>
+                        <td>${purchase.date}</td>
+                    `;
+                    purchaseData.appendChild(row);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
